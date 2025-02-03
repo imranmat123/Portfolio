@@ -1,9 +1,9 @@
 package main
 
 import (
-	"ImransProfoiloWebsite/db"
-	"ImransProfoiloWebsite/renderers"
-	"ImransProfoiloWebsite/routes"
+	"ImransProfoiloWebsite/internal/db"
+	"ImransProfoiloWebsite/internal/renderers"
+	"ImransProfoiloWebsite/pkg/routes"
 	"github.com/labstack/echo/v4"
 	"log"
 )
@@ -23,7 +23,7 @@ func main() {
 		Ext: ".html",
 	}
 
-	routes.SetupRoutes(e)
+	routes.SetupRoutes(db.GetDB(), e)
 	err = e.Start(":8080")
 
 	if err != nil {

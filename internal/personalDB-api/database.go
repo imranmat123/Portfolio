@@ -1,7 +1,7 @@
 package personalDB_api
 
 import (
-	"ImransProfoiloWebsite/models"
+	"ImransProfoiloWebsite/internal/models"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 )
@@ -43,7 +43,7 @@ func CreateUser(d *sqlx.DB, user models.User) error {
 	return nil
 }
 
-func UpdateUser(d *sqlx.DB, updatedUser models.User) error {
+func UpdateUser(d *sqlx.DB, updatedUser models.GetUser) error {
 
 	if updatedUser.UserID == 0 {
 		return fmt.Errorf("these two ID's do not match and thus are not to be updated")
