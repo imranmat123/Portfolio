@@ -153,5 +153,5 @@ func DeleteUser(db *sqlx.DB, c echo.Context) error {
 		"status":  400,
 		"message": "unable to delete user",
 	})
-	
+
 }
