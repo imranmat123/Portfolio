@@ -1,10 +1,11 @@
 package main
 
 import (
-	"ImransProfoiloWebsite/db"
-	"ImransProfoiloWebsite/renderers"
-	"ImransProfoiloWebsite/routes"
+	"ImransProfoiloWebsite/internal/db"
+	"ImransProfoiloWebsite/internal/renderers"
+	"ImransProfoiloWebsite/pkg/routes"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"log"
 )
 
@@ -18,12 +19,17 @@ func main() {
 
 	e := echo.New()
 
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
+	}))
+
 	e.Renderer = &renderers.HTMLTemplate{
 		Dir: "templates",
 		Ext: ".html",
 	}
 
-	routes.SetupRoutes(e)
+	routes.SetupRoutes(db.GetDB(), e)
 	err = e.Start(":8080")
 
 	if err != nil {
