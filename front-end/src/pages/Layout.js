@@ -1,8 +1,9 @@
 import React from "react";
-import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
+import {Link, Route, Routes} from "react-router-dom";
 import Home from "./Home";
 import About from "./About";
 import Contact from "./Contact";
+import ProfilePicture from "../components/ProfilePicture";
 
 function Layout(){
 
@@ -13,13 +14,17 @@ function Layout(){
                 <Link to="/about">About</Link>
                 <Link to="/contact">Contant</Link>
             </div>
-                <div className="lol1">
+            <div className="profilePicture">
+                <ProfilePicture />
+            </div>
+            <div className="mainSection">
                 <Routes>
                     <Route path="/" element={<Home />}></Route>
                     <Route path="/about" element={<About />}></Route>
                     <Route path="/contact" element={<Contact />}></Route>
                 </Routes>
-             </div>
+            </div>
+
         </div>
 );
 

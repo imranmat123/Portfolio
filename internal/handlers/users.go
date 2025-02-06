@@ -80,6 +80,53 @@ func GetUserById(db *sqlx.DB, c echo.Context) error {
 	})
 }
 
+func GetProfilePicture(db *sqlx.DB, c echo.Context) error {
+	a, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"status":  404,
+			"message": "User not found",
+		})
+	}
+	b, err1 := personalDB_api.GetUserById(db, int64(a))
+	if err1 != nil {
+		return c.JSON(404, map[string]interface{}{
+			"status":  404,
+			"message": "No matching ID",
+		})
+	}
+
+	c.JSON(200, map[string]interface{}{
+		"status": 200,
+		"data":   b.ProfilePicture,
+	})
+
+	return nil
+}
+
+func GetAboutMe(db *sqlx.DB, c echo.Context) error {
+	a, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, map[string]interface{}{
+			"status":  400,
+			"message": "unable to convert ID to int",
+		})
+	}
+	b, err1 := personalDB_api.GetUserById(db, int64(a))
+	if err1 != nil {
+		c.JSON(404, map[string]interface{}{
+			"status":  404,
+			"message": "unable to find user",
+		})
+	}
+	c.JSON(200, map[string]interface{}{
+		"status": 200,
+		"data":   b.AboutMe,
+	})
+	return nil
+
+}
+
 func UpdateUser(db *sqlx.DB, c echo.Context) error {
 	a, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

@@ -29,6 +29,12 @@ func SetupRoutes(db *sqlx.DB, e *echo.Echo) {
 		return handlers.GetUserById(db, e)
 	})
 
+	e.GET("/users/profilePicture/:id", func(e echo.Context) error {
+		return handlers.GetProfilePicture(db, e)
+	})
+
+	e.GET("/users/aboutMe/:id", func(e echo.Context) error { return handlers.GetAboutMe(db, e) })
+
 	e.POST("/usersCreate", func(e echo.Context) error {
 		return handlers.CreateUser(db, e)
 	})

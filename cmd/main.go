@@ -5,6 +5,7 @@ import (
 	"ImransProfoiloWebsite/internal/renderers"
 	"ImransProfoiloWebsite/pkg/routes"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"log"
 )
 
@@ -17,6 +18,11 @@ func main() {
 	log.Println("we are connected to the database")
 
 	e := echo.New()
+
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
+	}))
 
 	e.Renderer = &renderers.HTMLTemplate{
 		Dir: "templates",
