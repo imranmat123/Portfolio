@@ -7,15 +7,9 @@ const ProfilePicture = () => {
     const [profilePicture, setProfilePicture] =  useState(null)
 
     useEffect(() => {
-        function fetchProfilePicture(){
-            axios.get(
-                "http://localhost:8080/users/profilePicture/1"
-            ).then(response => {
-                setProfilePicture(response.data)
+            axios.get("http://localhost:8080/users/profilePicture/1")
+                .then(response => {setProfilePicture(response.data)
             })
-        }
-        fetchProfilePicture()
-
         },[]
     )
 

@@ -16,6 +16,8 @@ func MynewDatabase(db *sqlx.DB) *Database {
 	}
 }
 
+//users
+
 func CreateUser(d *sqlx.DB, user models.User) error {
 	insert := `INSERT INTO  Users (
 		first_name,
@@ -108,6 +110,92 @@ func DeleteUser(d *sqlx.DB, id int64) error {
 
 	if c != nil {
 		return fmt.Errorf("item hasn't been deleted: %v", c)
+	}
+	return nil
+}
+
+// projects
+func CreateProjects(db *sqlx.DB, project models.Projects) error {
+	insert := `INSERT INTO Project(
+        user_id,            
+        project_name,
+        about,  
+        created_at,  
+        updated_at,
+        project_url) VALUES (?, ?, ?, NOW(), NOW(), ?)`
+
+	_, err := db.Exec(insert,
+		project.UserID,
+		project.ProjectName,
+		project.About,
+		project.ProjectURL,
+	)
+	if err != nil {
+		return fmt.Errorf("CreateProjects has failed in insert: %v", err)
+	}
+	return nil
+}
+
+func GetAllProjects(db *sqlx.DB) ([]models.Projects, error) {
+
+	var p []models.Projects
+
+	get := `SELECT * FROM Project`
+
+	err := db.Select(&p, get)
+	if err != nil {
+		return nil, fmt.Errorf("we are unable to get all projects: %v", err)
+	}
+	return p, nil
+}
+
+func GetProjectById(db *sqlx.DB, id int64) (*models.Projects, error) {
+	var a models.Projects
+	in := `SELECT * FROM Project WHERE project_id = ?`
+
+	err := db.Get(&a, in, id)
+	if err != nil {
+		return nil, fmt.Errorf("we have not been able to get the project by the id: %v", err)
+	}
+	return &a, nil
+}
+
+func UpdateProjects(db *sqlx.DB, m *models.Projects) (*models.Projects, error) {
+	up := `UPDATE Project SET 
+                project_name =?,
+                about =?,
+                updated_at =?,
+            	project_url=?
+                WHERE project_id = ?`
+
+	_, err := db.Exec(up,
+		m.ProjectName,
+		m.About,
+		m.UpdatedAt,
+		m.ProjectURL,
+		m.ProjectID,
+	)
+
+	if err != nil {
+		return nil, fmt.Errorf("we have not been able to update the project: %v", err)
+	}
+
+	a, err1 := GetProjectById(db, m.ProjectID)
+
+	if err1 != nil {
+		return nil, fmt.Errorf("we have atampted to get the ID from the update function, it was unable to be found: %v", err1)
+	}
+
+	return a, nil
+}
+
+func DeleteProject(db *sqlx.DB, id int64) error {
+	del := `DELETE FROM Project WHERE project_id =?`
+
+	_, err := db.Exec(del, id)
+
+	if err != nil {
+		return fmt.Errorf("we have not been able to delete the project: %v", err)
 	}
 	return nil
 }

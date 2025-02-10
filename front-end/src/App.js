@@ -4,6 +4,7 @@ import './App.css';
 import {BrowserRouter} from "react-router-dom";
 import AboutMe from "./components/AboutMe";
 import GitHubLogo from "./components/GitHubLogo";
+import Projects from "./components/Projects";
 
 
 function App() {
@@ -22,9 +23,7 @@ function App() {
                 <div className="githubLogo">
                     <GitHubLogo/>
                 </div>
-                <div className="projectsLinks">
-
-                </div>
+                    <Projects/>
 
             </div>
 

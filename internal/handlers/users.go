@@ -51,6 +51,13 @@ func GetAllUsers(db *sqlx.DB, c echo.Context) error {
 			"message": "we were not able to get all users",
 		})
 	}
+	if len(a) == 0 {
+		return c.JSON(200, map[string]interface{}{
+			"status":  200,
+			"message": "query was successful, but there is no users",
+			"data":    a,
+		})
+	}
 	return c.JSON(200, map[string]interface{}{
 		"status": 200,
 		"data":   a,
