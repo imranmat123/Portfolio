@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "../App.css"
 
 const Projects = () => {
@@ -22,42 +25,30 @@ const Projects = () => {
     },[])
 
     const [currentPage, setCurrentPage] = useState(0)
-    const itemsPerPage = 4
     const pagArray = UserProject.data || []
-    const num = numberOfProjects.data || []
 
 
-    const startIndex = currentPage * itemsPerPage
-
-    const totalPage = Math.ceil(num/itemsPerPage)
-
-    function handleNextPage(){
-        console.log("Current page before:", currentPage);
-        console.log("Total pages:", totalPage);
-        console.log("UserProject:", UserProject);
-        console.log("pagArray:", pagArray);
-        if(currentPage < totalPage -1){
-            setCurrentPage(currentPage+1)
+    const settings = {
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        beforeChange: (current, next) => {
+            setCurrentPage(next);
+        },
         }
-        console.log("Current page after:", currentPage);
-    }
-    const endIndex = startIndex + itemsPerPage
-
-
-    const page = pagArray.slice(startIndex, endIndex)
 
 
     return numberOfProjects != null
     ?
-        <div className="projectsLinks">{
-            page.map((UserProject) =>
+        <div className="projectsLinks">
+            <Slider {...settings}>{
+                pagArray.map((UserProject) =>
             <div className="projectNumber" key={UserProject.project_id}>
                 <h3>{UserProject.project_name}</h3>
             </div>
             )
         }
-            <button className="nextPage" onClick={handleNextPage}>
-            </button>
+            </Slider>
         </div>
         :
         <div className="projectsLinks">

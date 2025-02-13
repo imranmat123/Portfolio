@@ -5,6 +5,7 @@ import {BrowserRouter} from "react-router-dom";
 import AboutMe from "./components/AboutMe";
 import GitHubLogo from "./components/GitHubLogo";
 import Projects from "./components/Projects";
+import Timeline from "./components/Timeline";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
                     <GitHubLogo/>
                 </div>
                     <Projects/>
+                    <Timeline/>
 
             </div>
 
