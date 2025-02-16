@@ -199,3 +199,183 @@ func DeleteProject(db *sqlx.DB, id int64) error {
 	}
 	return nil
 }
+
+//education
+
+func CreateEducation(db *sqlx.DB, education models.Education) error {
+	i := `INSERT INTO Education(
+		education_id,
+		user_id,
+		name,
+		about,
+		start_date,
+		end_date)
+		VALUES (?,?,?,?,?,?)`
+
+	_, err := db.Exec(
+		i,
+		education.EducationID,
+		education.UserID,
+		education.Name,
+		education.About,
+		education.StartDate,
+		education.EndDate)
+	if err != nil {
+		return fmt.Errorf("we were unable to input your data into the database")
+	}
+	fmt.Println("database has been added to the database. ")
+	return nil
+}
+
+func GetAllEducation(db *sqlx.DB) (*[]models.Education, error) {
+	var a []models.Education
+	i := `SELECT * FROM Education`
+	err := db.Get(&a, i)
+	if err != nil {
+		return nil, fmt.Errorf("unable to get the educaiton list")
+	}
+	return &a, nil
+
+}
+func GetUsersEducationByUserID(db *sqlx.DB, id int64) (*[]models.Education, error) {
+	var a []models.Education
+	i := `SELECT * FROM Education WHERE education_id = ?`
+	err := db.Get(&a, i, id)
+	if err != nil {
+		return nil, fmt.Errorf("unable to get users education information")
+	}
+	fmt.Print("successfully got users information")
+	return &a, nil
+}
+
+func GetEducationByEducationID(db *sqlx.DB, id int64) (*models.Education, error) {
+	var a models.Education
+	i := `SELECT * FROM Education WHERE education_id =?`
+	err := db.Get(&a, i, id)
+	if err != nil {
+		return nil, fmt.Errorf("unable to get the education by ID")
+	}
+	return &a, nil
+
+}
+
+func UpdateEducation(db *sqlx.DB, education *models.Education) (*models.Education, error) {
+	i := `UPDATE Education SET 
+			name =?,
+			about =?,
+			start_date=?,
+			end_date=? 
+                 WHERE education_id =?`
+
+	_, err := db.Exec(i,
+		education.Name,
+		education.About,
+		education.StartDate,
+		education.EndDate,
+		education.EducationID)
+	if err != nil {
+		return nil, fmt.Errorf("unable to update education")
+	}
+
+	a, err1 := GetEducationByEducationID(db, education.EducationID)
+	if err1 != nil {
+		return nil, fmt.Errorf("unable to get educationID")
+	}
+	return a, nil
+}
+
+func DeleteEducation(db *sqlx.DB, education *models.Education) error {
+	i := `DELETE FROM Education WHERE education_id =?`
+	_, err := db.Exec(i, education.EducationID)
+
+	if err != nil {
+		return fmt.Errorf("we are not been able to delete the education")
+	}
+	return nil
+}
+
+//work
+
+func CreateWork(db *sqlx.DB, work models.Work) error {
+	i := `INSERT INTO Work(
+			work_id,
+            user_id,
+            title,
+            about,
+            start_date,
+            end_date) VALUES (?.?.?,?,?,?)`
+	_, err := db.Exec(i,
+		work.WorkID,
+		work.UserID,
+		work.Title,
+		work.About,
+		work.StartDate,
+		work.EndDate)
+	if err != nil {
+		return fmt.Errorf("unable to input create work: %v")
+	}
+	return nil
+}
+func GetAllWork(db *sqlx.DB) (*[]models.Work, error) {
+	var a []models.Work
+	i := `SELECT * FROM Work`
+	err := db.Get(&a, i)
+	if err != nil {
+		return nil, fmt.Errorf("unable to select all from work: %v")
+	}
+
+	return &a, nil
+}
+
+func GetAllWorkByWorkID(db *sqlx.DB, id int64) (*models.Work, error) {
+	var a models.Work
+	i := `SELECT * FROM Work WHERE work_id =?`
+	err := db.Get(&a, i, id)
+	if err != nil {
+		return nil, fmt.Errorf("unable to get work with that id")
+	}
+	return &a, nil
+}
+
+func GetAllWorkByUserID(db *sqlx.DB, id int64) (*[]models.Work, error) {
+	var a []models.Work
+	i := `SELECT * FROM Work WHERE user_id =?`
+	err := db.Get(&a, i, id)
+	if err != nil {
+		return nil, fmt.Errorf("unable to get work with that id")
+	}
+	return &a, nil
+}
+
+func UpdateWork(db *sqlx.DB, work models.Work) (*models.Work, error) {
+	i := `UPDATE Work SET 
+                title =?,
+                about =?,
+                start_date =?,
+                end_date WHERE work_id =?`
+
+	_, err := db.Exec(i,
+		work.Title,
+		work.About,
+		work.StartDate,
+		work.EndDate,
+		work.WorkID)
+	if err != nil {
+		return nil, fmt.Errorf("unable to update work: %v")
+	}
+	c, err1 := GetAllWorkByWorkID(db, work.WorkID)
+	if err1 != nil {
+		return nil, fmt.Errorf("unable to get work by ID: %v")
+	}
+	return c, nil
+}
+func DeleteWork(db *sqlx.DB, id int64) error {
+	i := `DELETE FROM Work WHERE work_id=?`
+	_, err := db.Exec(i, id)
+	if err != nil {
+		return fmt.Errorf("unable to delete the work")
+	}
+	fmt.Print("work has been deleted")
+	return nil
+
+}

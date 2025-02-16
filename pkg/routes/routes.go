@@ -40,27 +40,3 @@ func SetupRoutes(db *sqlx.DB, e *echo.Echo) {
 	e.PUT("/projects/UpdateProject/:id", func(e echo.Context) error { return handlers.UpdateProject(db, e) })
 	e.DELETE("/projects/DeleteProject/:id", func(e echo.Context) error { return handlers.DeleteProject(db, e) })
 }
-
-//func DeleteProject(db *sqlx.DB, c echo.Context) error {
-//	var a models.Projects
-//	err := c.Bind(&a)
-//	if err != nil {
-//		return c.JSON(404, map[string]interface{}{
-//			"status":  404,
-//			"message": "unable to bind variable",
-//		})
-//	}
-//	b := personalDB_api.DeleteProject(db, a.ProjectID)
-//	if b != nil {
-//		return c.JSON(400, map[string]interface{}{
-//			"status":  400,
-//			"message": "was unable to delete the project",
-//		})
-//	}
-//	return c.JSON(200, map[string]interface{}{
-//		"status":  200,
-//		"message": "project has been deleted",
-//	})
-//}
-//
-//
