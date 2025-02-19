@@ -3,6 +3,7 @@ package handlers
 import (
 	"ImransProfoiloWebsite/internal/models"
 	personalDB_api "ImransProfoiloWebsite/internal/personalDB-api"
+	"fmt"
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
 	"strconv"
@@ -10,7 +11,15 @@ import (
 
 func CreateEducation(db *sqlx.DB, c echo.Context) error {
 	var a models.Education
-	err := personalDB_api.CreateEducation(db, a)
+	err123 := c.Bind(&a)
+	fmt.Print(a)
+	if err123 != nil {
+		return c.JSON(500, map[string]interface{}{
+			"status":  500,
+			"message": "unable bind",
+		})
+	}
+	err := personalDB_api.CreateEducation(db, &a)
 	if err != nil {
 		return c.JSON(500, map[string]interface{}{
 			"status":  500,
@@ -19,9 +28,32 @@ func CreateEducation(db *sqlx.DB, c echo.Context) error {
 	}
 	return c.JSON(200, map[string]interface{}{
 		"status": 200,
-		"data":   &a,
+		"data":   a,
 	})
 }
+
+func GetAllEducation(db *sqlx.DB, c echo.Context) error {
+	a, err := personalDB_api.GetAllEducation(db)
+	if err != nil {
+		return c.JSON(500, map[string]interface{}{
+			"status":  500,
+			"message": "unable to get all education",
+		})
+	}
+
+	if len(a) == 0 {
+		return c.JSON(404, map[string]interface{}{
+			"status":  404,
+			"message": "unable to find work %v",
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"status": 200,
+		"data":   a,
+	})
+}
+
 func GetEducationByEducationID(db *sqlx.DB, c echo.Context) error {
 	a, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

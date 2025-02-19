@@ -39,4 +39,20 @@ func SetupRoutes(db *sqlx.DB, e *echo.Echo) {
 	e.GET("/projects/GetAllUserProjects/:id", func(e echo.Context) error { return handlers.GetAllUserProjects(db, e) })
 	e.PUT("/projects/UpdateProject/:id", func(e echo.Context) error { return handlers.UpdateProject(db, e) })
 	e.DELETE("/projects/DeleteProject/:id", func(e echo.Context) error { return handlers.DeleteProject(db, e) })
+
+	//education
+	e.POST("/projects/CreateEducation", func(e echo.Context) error { return handlers.CreateEducation(db, e) })
+	e.GET("/projects/GetAllEducation", func(e echo.Context) error { return handlers.GetAllEducation(db, e) })
+	e.GET("/projects/GetEducationByEducationID/:id", func(e echo.Context) error { return handlers.GetEducationByEducationID(db, e) })
+	e.GET("/projects/GetEducationByUserID/:id", func(e echo.Context) error { return handlers.GetEducationByUserID(db, e) })
+	e.PUT("/projects/UpdateEducation/:id", func(e echo.Context) error { return handlers.UpdateEducation(db, e) })
+	e.DELETE("/projects/DeleteEducation/:id", func(e echo.Context) error { return handlers.DeleteEducation(db, e) })
+
+	//work
+	e.POST("/projects/CreateWork", func(e echo.Context) error { return handlers.CreateWork(db, e) })
+	e.GET("/projects/GetAllWork", func(e echo.Context) error { return handlers.GetAllWork(db, e) })
+	e.GET("/projects/GetByWorkID/:id", func(e echo.Context) error { return handlers.GetByWorkID(db, e) })
+	e.GET("/projects/GetWorkByUserID/:id", func(e echo.Context) error { return handlers.GetWorkByUserId(db, e) })
+	e.PUT("/projects/UpdateWork/:id", func(e echo.Context) error { return handlers.UpdateWork(db, e) })
+	e.DELETE("/projects/DeleteWork/:id", func(e echo.Context) error { return handlers.DeleteWork(db, e) })
 }

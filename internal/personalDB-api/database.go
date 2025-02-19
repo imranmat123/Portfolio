@@ -202,19 +202,17 @@ func DeleteProject(db *sqlx.DB, id int64) error {
 
 //education
 
-func CreateEducation(db *sqlx.DB, education models.Education) error {
+func CreateEducation(db *sqlx.DB, education *models.Education) error {
 	i := `INSERT INTO Education(
-		education_id,
 		user_id,
 		name,
 		about,
 		start_date,
 		end_date)
-		VALUES (?,?,?,?,?,?)`
+		VALUES (?,?,?,?,?)`
 
 	_, err := db.Exec(
 		i,
-		education.EducationID,
 		education.UserID,
 		education.Name,
 		education.About,
@@ -227,14 +225,14 @@ func CreateEducation(db *sqlx.DB, education models.Education) error {
 	return nil
 }
 
-func GetAllEducation(db *sqlx.DB) (*[]models.Education, error) {
+func GetAllEducation(db *sqlx.DB) ([]models.Education, error) {
 	var a []models.Education
 	i := `SELECT * FROM Education`
-	err := db.Get(&a, i)
+	err := db.Select(&a, i)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get the educaiton list")
 	}
-	return &a, nil
+	return a, nil
 
 }
 func GetUsersEducationByUserID(db *sqlx.DB, id int64) (*[]models.Education, error) {
@@ -296,7 +294,7 @@ func DeleteEducation(db *sqlx.DB, education *models.Education) error {
 
 //work
 
-func CreateWork(db *sqlx.DB, work models.Work) error {
+func CreateWork(db *sqlx.DB, work *models.Work) error {
 	i := `INSERT INTO Work(
 			work_id,
             user_id,
